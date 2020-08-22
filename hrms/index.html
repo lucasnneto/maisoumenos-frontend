@@ -22,6 +22,8 @@
 <!-- MAIN CSS -->
 <link rel="stylesheet" href="../assets/css/site.min.css">
 
+<script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
+
 <!-- Biblioteca de Mapas -->
 <script src="https://polyfill.io/v3/polyfill.min.js?features=default"></script>
     <script
@@ -290,7 +292,7 @@
     
 
     <div id="rightbar" class="rightbar">
-        <div class="body">
+        <div class="body" id="app">
             <ul class="nav nav-tabs2">
                 <li class="nav-item"><a class="nav-link active" data-toggle="tab" href="#Chat-one">Chat</a></li>
                 <li class="nav-item"><a class="nav-link" data-toggle="tab" href="#Chat-list">List</a></li>
@@ -517,6 +519,7 @@
 
 </div>
 <script>
+    // var myLatLng = {lat: -19.7532845, lng:  -47.9363265};    
     let map;
     function initMap() {
       map = new google.maps.Map(document.getElementById("map"), {
@@ -524,8 +527,36 @@
           lat: -19.7502,
           lng: -47.9325,
         },
-        zoom: 15,
+        zoom: 14,
       });
+//       var marker = new google.maps.Marker({
+//     position: myLatLng,
+//     map: map,
+//     title: 'Hello World!'
+//   });
+
+  new Vue({
+      el:"#app",
+      created(){
+        fetch("https://cmaisoumenos.herokuapp.com/api/hospital")
+          .then((x) => x.json())
+          .then((hospitals) => {
+              
+            hospitals.forEach((hp)=>{
+              
+                new google.maps.Marker({
+                position: {
+                    lat: hp.lat,
+                    lng: hp.lng,
+                },
+                map: map,
+             title: hp.nome,
+            icon: hp.covid?"../assets/images/pin_red.png":"../assets/images/pin_blue.png"
+                    });
+            });
+          });
+      }
+  })
     }
   </script>
 <!-- Javascript -->
