@@ -85,6 +85,10 @@
                 </label>
               </div>
 
+              <!-- <button type="submit" class="btn btn-primary btn-round btn-block">
+                Entrar
+              </button> -->
+
               <button
                 @click.prevent.stop="valida"
                 type="submit"
@@ -143,8 +147,9 @@
                       this.logado = true;
                       if (element.tipo) {
                         //HOSPITAL
+                        sessionStorage.setItem("id", element.id);
                         aux = window.location.href;
-                        aux = aux.replace("entrar.html", "dashboard.html");
+                        aux = aux.replace("entrar.html", "dashboard.html?");
                         window.location.href = aux;
                       } else {
                         //PACIENTE
