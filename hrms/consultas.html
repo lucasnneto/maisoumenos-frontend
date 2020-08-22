@@ -1,8 +1,8 @@
 <!doctype html>
-<html lang="en">
+<html lang="pt-BR">
 
 <head>
-<title>Oculux HR | Holidays</title>
+<title>C+- | Consultas</title>
 <meta charset="utf-8">
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0">
@@ -15,6 +15,12 @@
 <link rel="stylesheet" href="../assets/vendor/bootstrap/css/bootstrap.min.css">
 <link rel="stylesheet" href="../assets/vendor/font-awesome/css/font-awesome.min.css">
 <link rel="stylesheet" href="../assets/vendor/animate-css/vivify.min.css">
+
+<link rel="stylesheet" href="../assets/vendor/jquery-datatable/dataTables.bootstrap4.min.css">
+<link rel="stylesheet" href="../assets/vendor/sweetalert/sweetalert.css">
+<style>
+    .dataTables_length{display: none;}
+</style>
 
 <!-- MAIN CSS -->
 <link rel="stylesheet" href="../assets/css/site.min.css">
@@ -778,10 +784,9 @@
                 <ul id="main-menu" class="metismenu">
                     <li class="header">Main</li>
                     <li><a href="dashboard.html"><i class="icon-speedometer"></i><span>Dashboard</span></a></li>
-                    <li ><a href="pacientes.html"><i class="icon-user"></i><span>Pacientes</span></a></li>
-                    <li><a href="departamentos.html"><i class="icon-grid"></i><span>Departamentos</span></a></li>
+                    <li><a href="pacientes.html"><i class="icon-user"></i><span>Pacientes</span></a></li>
                     <li><a href="medicos.html"><i class="icon-users"></i><span>Médicos</span></a></li>
-                    <li class="active open"><a href="consultas.html"><i class="icon-flag"></i><span>Consultas</span></a></li>
+                    <li class="active open" ><a href="consultas.html"><i class="icon-flag"></i><span>Consultas</span></a></li>
                     <li style="position: absolute; bottom: 0;"><a href="perfil.html"><i class="icon-settings"></i><span>Perfil</span></a></li>
                 </ul>
             </nav>     
@@ -793,84 +798,147 @@
             <div class="block-header">
                 <div class="row clearfix">
                     <div class="col-md-6 col-sm-12">
-                        <h1>Holidays</h1>
+                        <h1>Consultas</h1>
                         <nav aria-label="breadcrumb">
                             <ol class="breadcrumb">
-                            <li class="breadcrumb-item"><a href="#">Oculux</a></li>
-                            <li class="breadcrumb-item active" aria-current="page">Holidays</li>
+                            <li class="breadcrumb-item"><a href="#">C+-</a></li>
+                            <li class="breadcrumb-item active" aria-current="page">Consultas</li>
                             </ol>
                         </nav>
                     </div>            
-                    <div class="col-md-6 col-sm-12 text-right hidden-xs">
-                        <a href="javascript:void(0);" class="btn btn-sm btn-primary" title="">Create Campaign</a>
-                        <a href="https://themeforest.net/item/oculux-bootstrap-4x-admin-dashboard-clean-modern-ui-kit/23091507" class="btn btn-sm btn-success" title="Themeforest"><i class="icon-basket"></i> Buy Now</a>
-                    </div>
                 </div>
             </div>
             <div class="row clearfix">
-                <div class="col-lg-12 col-md-12">
-                    <div class="table-responsive">
-                        <table class="table table-hover table-custom spacing5 mb-0">
-                            <thead>
-                                <tr>
-                                    <th>DAY</th>
-                                    <th>DATE</th>
-                                    <th>HOLIDAY</th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                <tr>
-                                    <td><span>Tuesday</span></td>
-                                    <td><span>Jan 01, 2019</span></td>
-                                    <td><span>New Year's Day</span></td>
-                                </tr>
-                                <tr>
-                                    <td><span>Monday</span></td>
-                                    <td><span>Jan 14, 2019</span></td>
-                                    <td><span>Makar Sankranti / Pongal</span></td>
-                                </tr>
-                                <tr>
-                                    <td><span>Saturday</span></td>
-                                    <td><span>Jan 26, 2019</span></td>
-                                    <td><span>Republic Day</span></td>
-                                </tr>
-                                <tr>
-                                    <td><span>Monday</span></td>
-                                    <td><span>Mar 04, 2019</span></td>
-                                    <td><span>Maha Shivaratri</span></td>
-                                </tr>
-                                <tr>
-                                    <td><span>Thursday</span></td>
-                                    <td><span>Mar 21, 2019</span></td>
-                                    <td><span>Holi</span></td>
-                                </tr>
-                                <tr>
-                                    <td><span>Friday</span></td>
-                                    <td><span>Apr 19, 2019</span></td>
-                                    <td><span>Good Friday</span></td>
-                                </tr>
-                                <tr>
-                                    <td><span>Wednesday</span></td>
-                                    <td><span>Jun 05, 2019</span></td>
-                                    <td><span>Eid-ul-Fitar</span></td>
-                                </tr>
-                                <tr>
-                                    <td><span>Thursday</span></td>
-                                    <td><span>Aug 15, 2019</span></td>
-                                    <td><span>Independence Day</span></td>
-                                </tr>
-                                <tr>
-                                    <td><span>Wednesday</span></td>
-                                    <td><span>Oct 02, 2019</span></td>
-                                    <td><span>Mathatma Gandhi Jayanti</span></td>
-                                </tr>
-                                <tr>
-                                    <td><span>Wednesday</span></td>
-                                    <td><span>Dec 25, 2019</span></td>
-                                    <td><span>Christmas</span></td>
-                                </tr>
-                            </tbody>
-                        </table>
+                <div class="col-lg-12">
+                    <div class="card">
+                        <ul class="nav nav-tabs2">
+                            <li class="nav-item"><a class="nav-link active show" data-toggle="tab" href="#e_consulta">Consultas</a></li>
+                            <li class="nav-item"><a class="nav-link" data-toggle="tab" href="#e_add">Nova Consulta</a></li>                
+                        </ul>
+                        <div class="tab-content">
+                            <div class="tab-pane" id="e_add">
+                                <div class="body">
+                                    <div class="row clearfix">
+                                        <div class="col-md-12">
+                                            <div class="form-group">                                    
+                                                <input type="text" class="form-control" placeholder="Paciente">
+                                            </div>
+                                        </div>
+                                        <div class="col-md-6">
+                                            <div class="form-group">                                    
+                                                <input type="text" class="form-control" placeholder="Médico">
+                                            </div>
+                                        </div>
+                                        <div class="col-md-6">
+                                            <div class="form-group">                                    
+                                                <input type="date" class="form-control">
+                                            </div>
+                                        </div>
+                                        <div class="col-md-6">
+                                            <div class="form-group">                                    
+                                                <input type="text" class="form-control" placeholder="Sintomas">
+                                            </div>
+                                        </div>
+                                        <div class="col-md-6">
+                                            <div class="form-group">                                    
+                                                <input type="text" class="form-control" placeholder="Valor">
+                                            </div>
+                                        </div>
+                                        <div class="col-12">
+                                            <button type="button" class="btn btn-primary">Inserir</button>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="tab-pane show active" id="e_consulta">
+                                <div class="table-responsive">
+                                    <table class="table table-hover js-basic-example dataTable table-custom spacing5 mb-0">
+                                        <thead>
+                                            <tr>
+                                                <th>#</th>
+                                                <th>Paciente</th>
+                                                <th>Médico</th>
+                                                <th>Horários</th>
+                                                <th>Sintomas</th>
+                                                <th>Valor</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            <tr>
+                                                <td>01</td>
+                                                <td><div class="font-15">Web Development</div></td>
+                                                <td>John Smith</td>
+                                                <td>102</td>
+                                                <td>
+                                                    <button type="button" class="btn btn-sm btn-default" title="Edit"><i class="fa fa-edit"></i></button>
+                                                    <button type="button" class="btn btn-sm btn-default js-sweetalert" title="Delete" data-type="confirm"><i class="fa fa-trash-o text-danger"></i></button>
+                                                </td>
+                                            </tr>
+                                            <tr>
+                                                <td>02</td>
+                                                <td><div class="font-15">Marketing</div></td>
+                                                <td>Maryam Amiri</td>
+                                                <td>13</td>
+                                                <td>
+                                                    <button type="button" class="btn btn-sm btn-default" title="Edit"><i class="fa fa-edit"></i></button>
+                                                    <button type="button" class="btn btn-sm btn-default js-sweetalert" title="Delete" data-type="confirm"><i class="fa fa-trash-o text-danger"></i></button>
+                                                </td>
+                                            </tr>
+                                            <tr>
+                                                <td>03</td>
+                                                <td><div class="font-15">App Development</div></td>
+                                                <td>Frank Camly</td>
+                                                <td>21</td>
+                                                <td>
+                                                    <button type="button" class="btn btn-sm btn-default" title="Edit"><i class="fa fa-edit"></i></button>
+                                                    <button type="button" class="btn btn-sm btn-default js-sweetalert" title="Delete" data-type="confirm"><i class="fa fa-trash-o text-danger"></i></button>
+                                                </td>
+                                            </tr>
+                                            <tr>
+                                                <td>04</td>
+                                                <td><div class="font-15">Support</div></td>
+                                                <td>Gary Camara</td>
+                                                <td>84</td>
+                                                <td>
+                                                    <button type="button" class="btn btn-sm btn-default" title="Edit"><i class="fa fa-edit"></i></button>
+                                                    <button type="button" class="btn btn-sm btn-default js-sweetalert" title="Delete" data-type="confirm"><i class="fa fa-trash-o text-danger"></i></button>
+                                                </td>
+                                            </tr>
+                                            <tr>
+                                                <td>05</td>
+                                                <td><div class="font-15">Accounts</div></td>
+                                                <td>Fidel Tonn</td>
+                                                <td>11</td>
+                                                <td>
+                                                    <button type="button" class="btn btn-sm btn-default" title="Edit"><i class="fa fa-edit"></i></button>
+                                                    <button type="button" class="btn btn-sm btn-default js-sweetalert" title="Delete" data-type="confirm"><i class="fa fa-trash-o text-danger"></i></button>
+                                                </td>
+                                            </tr>
+                                            <tr>
+                                                <td>06</td>
+                                                <td><div class="font-15">PHP Open Source</div></td>
+                                                <td>Maryam Amiri</td>
+                                                <td>37</td>
+                                                <td>
+                                                    <button type="button" class="btn btn-sm btn-default" title="Edit"><i class="fa fa-edit"></i></button>
+                                                    <button type="button" class="btn btn-sm btn-default js-sweetalert" title="Delete" data-type="confirm"><i class="fa fa-trash-o text-danger"></i></button>
+                                                </td>
+                                            </tr>
+                                            <tr>
+                                                <td>07</td>
+                                                <td><div class="font-15">Design and Printing</div></td>
+                                                <td>Maryam Amiri</td>
+                                                <td>17</td>
+                                                <td>
+                                                    <button type="button" class="btn btn-sm btn-default" title="Edit"><i class="fa fa-edit"></i></button>
+                                                    <button type="button" class="btn btn-sm btn-default js-sweetalert" title="Delete" data-type="confirm"><i class="fa fa-trash-o text-danger"></i></button>
+                                                </td>
+                                            </tr>
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                        </div>            
                     </div>
                 </div>
             </div>
@@ -883,6 +951,13 @@
 <script src="../assets/bundles/libscripts.bundle.js"></script>
 <script src="../assets/bundles/vendorscripts.bundle.js"></script>
 
+<script src="../assets/vendor/sweetalert/sweetalert.min.js"></script>
+
 <script src="../assets/bundles/mainscripts.bundle.js"></script>
+<script src="../assets/js/pages/ui/dialogs.js"></script>
+<script src="../assets/js/pages/tables/jquery-datatable.js"></script>
+<script>
+    $('.dataTable').dataTable({searching: false});
+</script>
 </body>
 </html>
