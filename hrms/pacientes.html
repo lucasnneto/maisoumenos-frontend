@@ -915,8 +915,13 @@
                                     <div class="body mt-2">
                                         <div class="row clearfix">
                                             <div class="col-lg-6 col-md-6 col-sm-12">
+                                                
                                                 <div class="form-group">
-                                                    <input type="text" class="form-control" placeholder="Nome *">
+                                                    <select class="custom-select" id="inputGroupSelect01">
+                                                        <option disabled selected>Nome *</option>
+                                                        <option v-for="u in usersgeral">{{u.nome}}</option>
+                                                      </select>
+                                                    <!-- <input type="text" class="form-control" placeholder="Nome *"> -->
                                                 </div>
                                             </div>
                                             <div class="col-lg-6 col-md-6 col-sm-12">
@@ -944,11 +949,18 @@
       el: "#app",
       data: {
           id:"",
-        users: []
+        users: [],
+        usersgeral:[]
       },
       created(){
+        // fetch("https://cmaisoumenos.herokuapp.com/api/paciente")
+        //         .then((x) => x.json())
+        //         .then((hp) => {
+        //             console.log(hp)
+        //             this.usergeral = hp;
+        //         });
+
         id = sessionStorage.getItem('id');
-        
         // fetch("https://cmaisoumenos.herokuapp.com/api/hospital/"+id+"/pacientes")
         //         .then((x) => x.json())
         //         .then((hp) => {
