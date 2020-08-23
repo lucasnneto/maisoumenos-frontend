@@ -55,6 +55,20 @@
                     <div class="form-group">                            
                         <input type="password" class="form-control round" placeholder="Senha" style="border-color: #e2e4e7;">
                     </div>
+                    <div >
+                        <label>Você é um?</label>
+                        <div>
+                            <label class="fancy-radio">
+                                <input type="radio" name="tipo" value="hospital" required data-parsley-errors-container="#error-radio">
+                                <span><i></i>Hospital</span>
+                            </label>
+                            <label class="fancy-radio">
+                                <input type="radio" name="tipo" value="paciente">
+                                <span><i></i>Paciente</span>
+                            </label>
+                        </div>
+                        <p id="error-radio"></p>
+                    </div>
                     <button type="submit" class="btn btn-primary btn-round btn-block">Registrar</button>                                
                 </form>
                 <div class="separator-linethrough" style="border-color: #e2e4e7;"><span style="background-color: #fff;">OU</span></div>
