@@ -21,6 +21,10 @@
 <style>
     .dataTables_length{display: none;}
 </style>
+<script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+
+
 
 <!-- MAIN CSS -->
 <link rel="stylesheet" href="../assets/css/site.min.css">
@@ -852,76 +856,27 @@
                                             </tr>
                                         </thead>
                                         <tbody>
-                                            <tr>
-                                                <td>01</td>
-                                                <td><div class="font-15">Web Development</div></td>
-                                                <td>John Smith</td>
-                                                <td>102</td>
+                                            <tr v-for="(u,i) in consulta">
+                                                <td>0{{i+1}}</td>
                                                 <td>
-                                                    <button type="button" class="btn btn-sm btn-default" title="Edit"><i class="fa fa-edit"></i></button>
-                                                    <button type="button" class="btn btn-sm btn-default js-sweetalert" title="Delete" data-type="confirm"><i class="fa fa-trash-o text-danger"></i></button>
+                                                  <div class="font-15">
+                                                    {{hospitais(u.pid)+hospital[i].nome}}
+                                                  </div>
+                                                </td>
+                                                <td>
+                                                    {{hospitais(u.pid)+hospital[i].endereco}}
+                                                </td>
+                                               <td>     
+                                                   {{ medicos(u.fid)+med[i] }}
+                                               </td>
+                                               <td>
+                                                   {{u.time}}
+                                                </td>
+                                               <td>
+                                                   {{u.valor}}
                                                 </td>
                                             </tr>
-                                            <tr>
-                                                <td>02</td>
-                                                <td><div class="font-15">Marketing</div></td>
-                                                <td>Maryam Amiri</td>
-                                                <td>13</td>
-                                                <td>
-                                                    <button type="button" class="btn btn-sm btn-default" title="Edit"><i class="fa fa-edit"></i></button>
-                                                    <button type="button" class="btn btn-sm btn-default js-sweetalert" title="Delete" data-type="confirm"><i class="fa fa-trash-o text-danger"></i></button>
-                                                </td>
-                                            </tr>
-                                            <tr>
-                                                <td>03</td>
-                                                <td><div class="font-15">App Development</div></td>
-                                                <td>Frank Camly</td>
-                                                <td>21</td>
-                                                <td>
-                                                    <button type="button" class="btn btn-sm btn-default" title="Edit"><i class="fa fa-edit"></i></button>
-                                                    <button type="button" class="btn btn-sm btn-default js-sweetalert" title="Delete" data-type="confirm"><i class="fa fa-trash-o text-danger"></i></button>
-                                                </td>
-                                            </tr>
-                                            <tr>
-                                                <td>04</td>
-                                                <td><div class="font-15">Support</div></td>
-                                                <td>Gary Camara</td>
-                                                <td>84</td>
-                                                <td>
-                                                    <button type="button" class="btn btn-sm btn-default" title="Edit"><i class="fa fa-edit"></i></button>
-                                                    <button type="button" class="btn btn-sm btn-default js-sweetalert" title="Delete" data-type="confirm"><i class="fa fa-trash-o text-danger"></i></button>
-                                                </td>
-                                            </tr>
-                                            <tr>
-                                                <td>05</td>
-                                                <td><div class="font-15">Accounts</div></td>
-                                                <td>Fidel Tonn</td>
-                                                <td>11</td>
-                                                <td>
-                                                    <button type="button" class="btn btn-sm btn-default" title="Edit"><i class="fa fa-edit"></i></button>
-                                                    <button type="button" class="btn btn-sm btn-default js-sweetalert" title="Delete" data-type="confirm"><i class="fa fa-trash-o text-danger"></i></button>
-                                                </td>
-                                            </tr>
-                                            <tr>
-                                                <td>06</td>
-                                                <td><div class="font-15">PHP Open Source</div></td>
-                                                <td>Maryam Amiri</td>
-                                                <td>37</td>
-                                                <td>
-                                                    <button type="button" class="btn btn-sm btn-default" title="Edit"><i class="fa fa-edit"></i></button>
-                                                    <button type="button" class="btn btn-sm btn-default js-sweetalert" title="Delete" data-type="confirm"><i class="fa fa-trash-o text-danger"></i></button>
-                                                </td>
-                                            </tr>
-                                            <tr>
-                                                <td>07</td>
-                                                <td><div class="font-15">Design and Printing</div></td>
-                                                <td>Maryam Amiri</td>
-                                                <td>17</td>
-                                                <td>
-                                                    <button type="button" class="btn btn-sm btn-default" title="Edit"><i class="fa fa-edit"></i></button>
-                                                    <button type="button" class="btn btn-sm btn-default js-sweetalert" title="Delete" data-type="confirm"><i class="fa fa-trash-o text-danger"></i></button>
-                                                </td>
-                                            </tr>
+                                            
                                         </tbody>
                                     </table>
                                 </div>
@@ -946,6 +901,71 @@
 <script src="../assets/js/pages/tables/jquery-datatable.js"></script>
 <script>
     $('.dataTable').dataTable({searching: false});
+</script>
+<script>
+    new Vue({
+      el: "#main-content",
+      data: {
+        id:"",
+        consulta: [],
+        med:[],
+        hospital:[],
+        qtd:0,
+        superuser:[]
+      },
+      created(){
+        //id = sessionStorage.getItem("id");
+        id =  "5f419fde57ba440017d7315c"
+        console.log("=====================================",id);
+
+        axios
+        .get("https://cmaisoumenos.herokuapp.com/api/paciente/"+id+"/pegaConsulta")
+        .then((response) => (this.consulta = response.data));
+      },
+      methods:{
+        medicos(id) {
+            if(this.qtd<this.consulta.length*2){
+                this.qtd= this.qtd+1;
+
+                axios
+                .get(
+                    "https://cmaisoumenos.herokuapp.com/api/funcionario/" +
+                    id +
+                    "/medicos"
+                )
+                .then((response) => {
+                    console.log(response);
+
+                    this.med.push(response.data[0]);
+                });
+                
+            }
+            return "";
+          },
+          hospitais(id) {
+            if(this.qtd<this.consulta.length*2){
+                this.qtd= this.qtd+1;
+
+                axios
+                    .get(
+                        "https://cmaisoumenos.herokuapp.com/api/paciente/" +
+                        id +
+                        "/consulta/hospital"
+                    )
+                    .then((response) => {
+                        console.log(response)
+                        this.hospital.push(response.data[0]);
+                    });
+                   
+                }
+                return "";
+            },
+            
+          }
+    });
+      $('.dataTable').dataTable({searching: false});
+
+</script>
 </script>
 </body>
 </html>
