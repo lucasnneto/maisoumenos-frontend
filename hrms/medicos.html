@@ -17,7 +17,7 @@
 <link rel="stylesheet" href="../assets/vendor/animate-css/vivify.min.css">
 
 <link rel="stylesheet" href="../assets/vendor/sweetalert/sweetalert.css">
-
+<script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
 <!-- MAIN CSS -->
 <link rel="stylesheet" href="../assets/css/site.min.css">
 
@@ -820,89 +820,17 @@
                                                 <th class="w60">Nome</th>
                                                 <th></th>
                                                 <th></th>
-                                                <th>Data de inicio</th>
                                                 <th>Área</th>
                                             </tr>
                                         </thead>
                                         <tbody>
-                                            <tr>
-                                                <td class="width45">
-                                                    <div class="avtar-pic w35 bg-pink" data-toggle="tooltip" data-placement="top" title="Avatar Name"><span>MN</span></div>
-                                                </td>
+                                            <tr v-for="u in users">
                                                 <td>
-                                                    <h6 class="mb-0">Marshall Nichols</h6>
-                                                    <span>marshall-n@gmail.com</span>
+                                                    <h6 class="mb-0"> {{u.nome}} </h6>
                                                 </td>
-                                                <td><span class="badge badge-danger">Super Admin</span></td>
-                                                <td>24 Jun, 2015</td>
-                                                <td>CEO and Founder</td>
-                                                <td>
-                                                    
-                                                </td>
-                                            </tr>
-                                            <tr>
-                                                <td>
-                                                    <img src="../assets/images/xs/avatar5.jpg" data-toggle="tooltip" data-placement="top" title="Avatar Name" alt="Avatar" class="w35 h35 rounded">
-                                                </td>
-                                                <td>
-                                                    <h6 class="mb-0">Susie Willis</h6>
-                                                    <span>sussie-w@gmail.com</span>
-                                                </td>
-                                                <td><span class="badge badge-info">Admin</span></td>
-                                                <td>28 Jun, 2015</td>
-                                                <td>Team Lead</td>
-                                                <td>
-                                                    <button type="button" class="btn btn-sm btn-default" title="Edit"><i class="fa fa-edit"></i></button>
-                                                    <button type="button" class="btn btn-sm btn-default js-sweetalert" title="Delete" data-type="confirm"><i class="fa fa-trash-o text-danger"></i></button>
-                                                </td>
-                                            </tr>
-                                            <tr>
-                                                <td>
-                                                    <img src="../assets/images/xs/avatar4.jpg" data-toggle="tooltip" data-placement="top" title="Avatar Name" alt="Avatar" class="w35 h35 rounded">
-                                                </td>
-                                                <td>
-                                                    <h6 class="mb-0">Debra Stewart</h6>
-                                                    <span>debra@gmail.com</span>
-                                                </td>
-                                                <td><span class="badge badge-info">Admin</span></td>
-                                                <td>21 July, 2015</td>
-                                                <td>Team Lead</td>
-                                                <td>
-                                                    <button type="button" class="btn btn-sm btn-default" title="Edit"><i class="fa fa-edit"></i></button>
-                                                    <button type="button" class="btn btn-sm btn-default js-sweetalert" title="Delete" data-type="confirm"><i class="fa fa-trash-o text-danger"></i></button>
-                                                </td>
-                                            </tr>
-                                            <tr>
-                                                <td>
-                                                    <img src="../assets/images/xs/avatar7.jpg" data-toggle="tooltip" data-placement="top" title="Avatar Name" alt="Avatar" class="w35 h35 rounded">
-                                                </td>
-                                                <td>
-                                                    <h6 class="mb-0">Erin Gonzales</h6>
-                                                    <span>Erinonzales@gmail.com</span>
-                                                </td>
-                                                <td><span class="badge badge-default">Employee</span></td>
-                                                <td>21 July, 2015</td>
-                                                <td>Web Developer</td>
-                                                <td>
-                                                    <button type="button" class="btn btn-sm btn-default" title="Edit"><i class="fa fa-edit"></i></button>
-                                                    <button type="button" class="btn btn-sm btn-default js-sweetalert" title="Delete" data-type="confirm"><i class="fa fa-trash-o text-danger"></i></button>
-                                                </td>
-                                            </tr>
-                                            <tr>
-                                                <td>
-                                                    <div class="avtar-pic w35 bg-blue" data-toggle="tooltip" data-placement="top" title="Avatar Name"><span>MN</span></div>
-                                                </td>
-                                                <td>
-                                                    <h6 class="mb-0">Ava Alexander</h6>
-                                                    <span>alexander@gmail.com</span>
-                                                </td>
-                                                <td><span class="badge badge-success">HR Admin</span></td>
-                                                <td>21 July, 2015</td>
-                                                <td>HR</td>
-                                                <td>
-                                                    <button type="button" class="btn btn-sm btn-default" title="Edit"><i class="fa fa-edit"></i></button>
-                                                    <button type="button" class="btn btn-sm btn-default js-sweetalert" title="Delete" data-type="confirm"><i class="fa fa-trash-o text-danger"></i></button>
-                                                </td>
+                                                <td></td>
+                                                <td></td>
+                                                <td>{{u.area}}</td>
                                             </tr>
                                         </tbody>
                                     </table>                
@@ -913,7 +841,9 @@
                                     <div class="row clearfix">
                                         <div class="col-lg-6 col-md-6 col-sm-12">
                                             <div class="form-group">
-                                                <input type="text" class="form-control" placeholder="Nome *">
+                                                <select class="custom-select" id="inputGroupSelect01">
+                                                    <option disabled selected>Nome *</option>
+                                                  </select>
                                             </div>
                                         </div>
                                         <div class="col-lg-6 col-md-6 col-sm-12">
@@ -935,6 +865,42 @@
     </div>
     
 </div>
+
+<script>
+    new Vue({
+      el: "#main-content",
+      data: {
+          id:"",
+        users: [],
+        usersgeral:[]
+      },
+      async mounted(){
+            var comboCidades = document.getElementById("inputGroupSelect01");
+         await fetch("https://cmaisoumenos.herokuapp.com/api/medico")
+                .then((x) => x.json())
+                .then((hp) => {
+                    hp.forEach((element,index) => {
+                        var elem = document.createElement('option')
+                    elem.value = element.nome;
+                    elem.text  = element.nome;
+                    comboCidades.appendChild(elem);
+                    });
+                    
+                   
+                    this.usergeral = hp;
+                });
+        
+
+        id = sessionStorage.getItem('id');
+        fetch("https://cmaisoumenos.herokuapp.com/api/hospital/"+id+"/medicos")
+                .then((x) => x.json())
+                .then((hp) => {
+                    this.users= hp;
+                });
+                }
+    });
+  </script>
+
 
 <!-- Javascript -->
 <script src="../assets/bundles/libscripts.bundle.js"></script>
