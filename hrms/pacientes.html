@@ -821,91 +821,19 @@
                                             <thead>
                                                 <tr>
                                                     <th class="w60">id</th>
-                                                    <th></th>
-                                                    <th></th>
                                                     <th>Nome</th>
                                                     <th>CPF</th>
                                                 </tr>
                                             </thead>
                                             <tbody>
-                                                <tr >
+                                                <tr v-for="(u,i) in users">
                                                     <td class="width45">
-                                                        <div class="avtar-pic w35 bg-pink" data-toggle="tooltip" data-placement="top" title="Avatar Name"><span>MN</span></div>
+                                                        <span>{{i}}</span>
                                                     </td>
                                                     <td>
-                                                        <h6 class="mb-0">Marshall Nichols</h6>
-                                                        <span>marshall-n@gmail.com</span>
+                                                        <h6 class="mb-0">{{u.nome}}</h6>
                                                     </td>
-                                                    <td><span class="badge badge-danger">Super Admin</span></td>
-                                                    <td>24 Jun, 2015</td>
-                                                    <td>CEO and Founder</td>
-                                                    <td>
-                                                        
-                                                    </td>
-                                                </tr>
-                                                <tr>
-                                                    <td>
-                                                        <img src="../assets/images/xs/avatar5.jpg" data-toggle="tooltip" data-placement="top" title="Avatar Name" alt="Avatar" class="w35 h35 rounded">
-                                                    </td>
-                                                    <td>
-                                                        <h6 class="mb-0">Susie Willis</h6>
-                                                        <span>sussie-w@gmail.com</span>
-                                                    </td>
-                                                    <td><span class="badge badge-info">Admin</span></td>
-                                                    <td>28 Jun, 2015</td>
-                                                    <td>Team Lead</td>
-                                                    <td>
-                                                        <button type="button" class="btn btn-sm btn-default" title="Edit"><i class="fa fa-edit"></i></button>
-                                                        <button type="button" class="btn btn-sm btn-default js-sweetalert" title="Delete" data-type="confirm"><i class="fa fa-trash-o text-danger"></i></button>
-                                                    </td>
-                                                </tr>
-                                                <tr>
-                                                    <td>
-                                                        <img src="../assets/images/xs/avatar4.jpg" data-toggle="tooltip" data-placement="top" title="Avatar Name" alt="Avatar" class="w35 h35 rounded">
-                                                    </td>
-                                                    <td>
-                                                        <h6 class="mb-0">Debra Stewart</h6>
-                                                        <span>debra@gmail.com</span>
-                                                    </td>
-                                                    <td><span class="badge badge-info">Admin</span></td>
-                                                    <td>21 July, 2015</td>
-                                                    <td>Team Lead</td>
-                                                    <td>
-                                                        <button type="button" class="btn btn-sm btn-default" title="Edit"><i class="fa fa-edit"></i></button>
-                                                        <button type="button" class="btn btn-sm btn-default js-sweetalert" title="Delete" data-type="confirm"><i class="fa fa-trash-o text-danger"></i></button>
-                                                    </td>
-                                                </tr>
-                                                <tr>
-                                                    <td>
-                                                        <img src="../assets/images/xs/avatar7.jpg" data-toggle="tooltip" data-placement="top" title="Avatar Name" alt="Avatar" class="w35 h35 rounded">
-                                                    </td>
-                                                    <td>
-                                                        <h6 class="mb-0">Erin Gonzales</h6>
-                                                        <span>Erinonzales@gmail.com</span>
-                                                    </td>
-                                                    <td><span class="badge badge-default">Employee</span></td>
-                                                    <td>21 July, 2015</td>
-                                                    <td>Web Developer</td>
-                                                    <td>
-                                                        <button type="button" class="btn btn-sm btn-default" title="Edit"><i class="fa fa-edit"></i></button>
-                                                        <button type="button" class="btn btn-sm btn-default js-sweetalert" title="Delete" data-type="confirm"><i class="fa fa-trash-o text-danger"></i></button>
-                                                    </td>
-                                                </tr>
-                                                <tr>
-                                                    <td>
-                                                        <div class="avtar-pic w35 bg-blue" data-toggle="tooltip" data-placement="top" title="Avatar Name"><span>MN</span></div>
-                                                    </td>
-                                                    <td>
-                                                        <h6 class="mb-0">Ava Alexander</h6>
-                                                        <span>alexander@gmail.com</span>
-                                                    </td>
-                                                    <td><span class="badge badge-success">HR Admin</span></td>
-                                                    <td>21 July, 2015</td>
-                                                    <td>HR</td>
-                                                    <td>
-                                                        <button type="button" class="btn btn-sm btn-default" title="Edit"><i class="fa fa-edit"></i></button>
-                                                        <button type="button" class="btn btn-sm btn-default js-sweetalert" title="Delete" data-type="confirm"><i class="fa fa-trash-o text-danger"></i></button>
-                                                    </td>
+                                                    <td>{{u.cpf}}</td>
                                                 </tr>
                                             </tbody>
                                         </table>                
@@ -919,9 +847,7 @@
                                                 <div class="form-group">
                                                     <select class="custom-select" id="inputGroupSelect01">
                                                         <option disabled selected>Nome *</option>
-                                                        <option v-for="u in usersgeral">{{u.nome}}</option>
                                                       </select>
-                                                    <!-- <input type="text" class="form-control" placeholder="Nome *"> -->
                                                 </div>
                                             </div>
                                             <div class="col-lg-6 col-md-6 col-sm-12">
@@ -952,20 +878,29 @@
         users: [],
         usersgeral:[]
       },
-      created(){
-        // fetch("https://cmaisoumenos.herokuapp.com/api/paciente")
-        //         .then((x) => x.json())
-        //         .then((hp) => {
-        //             console.log(hp)
-        //             this.usergeral = hp;
-        //         });
+      async mounted(){
+            var comboCidades = document.getElementById("inputGroupSelect01");
+         await fetch("https://cmaisoumenos.herokuapp.com/api/paciente")
+                .then((x) => x.json())
+                .then((hp) => {
+                    hp.forEach((element,index) => {
+                        var elem = document.createElement('option')
+                    elem.value = element.nome;
+                    elem.text  = element.nome;
+                    comboCidades.appendChild(elem);
+                    });
+                    
+                    console.log(hp)
+                    this.usergeral = hp;
+                });
+        
 
         id = sessionStorage.getItem('id');
-        // fetch("https://cmaisoumenos.herokuapp.com/api/hospital/"+id+"/pacientes")
-        //         .then((x) => x.json())
-        //         .then((hp) => {
-        //             console.log(hp)
-        //         });
+        fetch("https://cmaisoumenos.herokuapp.com/api/hospital/"+id+"/pacientes")
+                .then((x) => x.json())
+                .then((hp) => {
+                    this.users= hp;
+                });
                 }
     });
   </script>
