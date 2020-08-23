@@ -36,6 +36,8 @@
     />
     <link rel="stylesheet" href="../assets/vendor/sweetalert/sweetalert.css" />
     <script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+
     <style>
       .dataTables_length {
         display: none;
@@ -1268,10 +1270,12 @@
                           <tr v-for="(u,i) in users">
                             <td>0{{i+1}}</td>
                             <td>
-                              <div class="font-15">{{u.nome_paciente}}</div>
+                              <div class="font-15">
+                                {{pt(u._id)+nomep[i]}}
+                              </div>
                             </td>
-                            <td>{{u.nome_medico}}</td>
-                            <td>{{u.time}}</td>
+                            <td>{{medico(u.fid)+nomem[i]}}</td>
+                            <td>{{horario(u.time)}}</td>
                             <td>
                               {{u.sintomas}}
                             </td>
@@ -1295,14 +1299,42 @@
         el: "#main-content",
         data: {
           id: "",
+          nomem: [],
+          nomep:[],
           users: [],
+          pacientes: [],
           usersgeral: [],
         },
         methods: {
-          async obter(param) {
-            let response = await fetch(param);
-            let data = await response.json();
-            return data;
+          horario(horario) {
+            return new Date(horario).toUTCString();
+          },
+          medico(id) {
+            axios
+              .get(
+                "https://cmaisoumenos.herokuapp.com/api/funcionario/" +
+                  id +
+                  "/medicos"
+              )
+              .then((response) => {
+                this.nomem.push(response.data[0].nome);
+              });
+            return "";
+          },
+          pt(id) {
+            axios
+              .get(
+                "https://cmaisoumenos.herokuapp.com/api/consulta/" +
+                  id +
+                  "/pegaPaciente"
+              )
+              .then((response) => {
+                this.nomep.push(response.data[0].nome);
+              })
+              .catch((err) => {
+                console.log(err);
+              });
+            return "";
           },
         },
         created() {
@@ -1322,61 +1354,41 @@
           //             });
 
           id = sessionStorage.getItem("id");
-          this.obter(
-            "https://cmaisoumenos.herokuapp.com/api/hospital/" +
-              id +
-              "/consultas"
-          ).then((data) => (this.users = data));
 
-          aux = {};
-          this.obter("https://cmaisoumenos.herokuapp.com/api/paciente").then(
-            (data) => {
-              this.users = this.users.map((el) => {
-                data.forEach((element) => {
-                  if (el.pid == element._id) {
-                    aux = {
-                      ...el,
-                      nome_paciente: element.nome,
-                      cpf_paciente: element.cpf,
-                    };
-                  }
-                });
-                return aux;
-              });
-            }
-          );
-          aux2 = {};
-          this.users = this.users.map((el) => {
-            this.obter(
-              "https://cmaisoumenos.herokuapp.com/api/funcionario/" +
-                el.fid +
-                "/medicos"
-            ).then((data) => {
-              console.log("sad", el.fid);
-              aux2 = {
-                ...el,
-                nome_medico: hp.nome,
-              };
-            });
-            return aux2;
-          });
+          axios
+            .get("https://cmaisoumenos.herokuapp.com/api/consulta")
+            .then((response) => (this.users = response.data));
 
-          //   this.users = this.users.map((el) => {
-          //     fetch(
-          //       "https://cmaisoumenos.herokuapp.com/api/funcionario/" +
-          //         el.fid +
-          //         "/medicos"
+          // this.users.forEach((element) => {
+          //   console.log("us", element);
+          //   axios
+          //     .get(
+          //       `https://cmaisoumenos.herokuapp.com/api/consulta/${el._id}/pegaPaciente`
           //     )
-          //       .then((x) => x.json())
-          //       .then((hp) => {
-          //         console.log("sad", el.fid);
-          //         aux2 = {
-          //           ...el,
-          //           nome_medico: hp.nome,
-          //         };
-          //       });
-          //     return aux2;
+          //     .then((response) => {
+          //       console.log("pa", response.data);
+          //       this.pacientes = response.data[0];
+          //     })
+          //     .catch((err) => {
+          //       console.log(err);
+          //     });
+          // });
+          // this.obter("https://cmaisoumenos.herokuapp.com/api/consulta").then(
+          //   (data) => (this.users = data)
+          // );
+          // setTimeout(() => {
+          //   this.users.map((el) => {
+          //     let aux = {};
+          //     this.obter(
+          //       `https://cmaisoumenos.herokuapp.com/api/consulta/${el._id}/pegaPaciente`
+          //     ).then((data) => {
+          //       this.pacientes.push(data[0]);
+          //     });
           //   });
+          // setTimeout(() => {
+          //   console.log(this.pacientes);
+          // }, 1000);
+          // }, 1000);
         },
       });
     </script>

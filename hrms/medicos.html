@@ -15,7 +15,7 @@
 <link rel="stylesheet" href="../assets/vendor/bootstrap/css/bootstrap.min.css">
 <link rel="stylesheet" href="../assets/vendor/font-awesome/css/font-awesome.min.css">
 <link rel="stylesheet" href="../assets/vendor/animate-css/vivify.min.css">
-
+<script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
 <link rel="stylesheet" href="../assets/vendor/sweetalert/sweetalert.css">
 <script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
 <!-- MAIN CSS -->
@@ -841,18 +841,19 @@
                                     <div class="row clearfix">
                                         <div class="col-lg-6 col-md-6 col-sm-12">
                                             <div class="form-group">
-                                                <select class="custom-select" id="inputGroupSelect01">
-                                                    <option disabled selected>Nome *</option>
-                                                  </select>
+                                                <div class="form-group">
+                                                    <input type="text" class="form-control" v-model="nome" placeholder="Nome">
+                                                </div>
+                                                
                                             </div>
                                         </div>
                                         <div class="col-lg-6 col-md-6 col-sm-12">
                                             <div class="form-group">
-                                                <input type="text" class="form-control" placeholder="Área">
+                                                <input type="text" class="form-control" v-model="area" placeholder="Área">
                                             </div>
                                         </div>       
                                         <div class="col-12">
-                                            <button type="button" class="btn btn-primary">inserir</button>
+                                            <button type="button" @click.prevent.stop="novo" class="btn btn-primary">inserir</button>
                                         </div>
                                     </div>
                                 </div>
@@ -871,26 +872,28 @@
       el: "#main-content",
       data: {
           id:"",
+          med:{},
+          nome:"",
+          area:"",
         users: [],
-        usersgeral:[]
+      },
+      methods:{
+          novo(){
+            if(this.nome!="" && this.area!=""){
+                const a = {
+                    nome:this.nome,
+                    area:this.area
+                }
+                axios.post('https://cmaisoumenos.herokuapp.com/api/medico', a)
+  .then(function (response) {
+   this.med = response;
+  })
+  console.log(this.med)
+ 
+            }
+          }
       },
       async mounted(){
-            var comboCidades = document.getElementById("inputGroupSelect01");
-         await fetch("https://cmaisoumenos.herokuapp.com/api/medico")
-                .then((x) => x.json())
-                .then((hp) => {
-                    hp.forEach((element,index) => {
-                        var elem = document.createElement('option')
-                    elem.value = element.nome;
-                    elem.text  = element.nome;
-                    comboCidades.appendChild(elem);
-                    });
-                    
-                   
-                    this.usergeral = hp;
-                });
-        
-
         id = sessionStorage.getItem('id');
         fetch("https://cmaisoumenos.herokuapp.com/api/hospital/"+id+"/medicos")
                 .then((x) => x.json())
