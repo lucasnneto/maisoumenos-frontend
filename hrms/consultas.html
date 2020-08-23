@@ -1204,11 +1204,12 @@
                       <div class="row clearfix">
                         <div class="col-md-12">
                           <div class="form-group">
-                            <input
-                              type="text"
-                              class="form-control"
-                              placeholder="Paciente"
-                            />
+                            <select
+                              class="custom-select"
+                              id="inputGroupSelect01"
+                            >
+                              <option disabled selected>Paciente</option>
+                            </select>
                           </div>
                         </div>
                         <div class="col-md-6">
@@ -1298,6 +1299,7 @@
       new Vue({
         el: "#main-content",
         data: {
+          qtd:0,
           id: "",
           nomem: [],
           nomep:[],
@@ -1310,48 +1312,56 @@
             return new Date(horario).toUTCString();
           },
           medico(id) {
-            axios
-              .get(
-                "https://cmaisoumenos.herokuapp.com/api/funcionario/" +
-                  id +
-                  "/medicos"
-              )
-              .then((response) => {
-                this.nomem.push(response.data[0].nome);
-              });
+            if(this.qtd<this.users.length*2){
+              this.qtd= this.qtd+1
+              axios
+                .get(
+                  "https://cmaisoumenos.herokuapp.com/api/funcionario/" +
+                    id +
+                    "/medicos"
+                )
+                .then((response) => {
+                  this.nomem.push(response.data[0].nome);
+                });
+            }
             return "";
           },
           pt(id) {
-            axios
-              .get(
-                "https://cmaisoumenos.herokuapp.com/api/consulta/" +
-                  id +
-                  "/pegaPaciente"
-              )
-              .then((response) => {
-                this.nomep.push(response.data[0].nome);
-              })
-              .catch((err) => {
-                console.log(err);
-              });
+            if(this.qtd<this.users.length*2){
+              this.qtd= this.qtd+1
+
+              axios
+                .get(
+                  "https://cmaisoumenos.herokuapp.com/api/consulta/" +
+                    id +
+                    "/pegaPaciente"
+                )
+                .then((response) => {
+                  this.nomep.push(response.data[0].nome);
+                })
+                .catch((err) => {
+                  console.log(err);
+                });
+            }
+
             return "";
           },
         },
-        created() {
-          //         var comboCidades = document.getElementById("inputGroupSelect01");
-          //      await fetch("https://cmaisoumenos.herokuapp.com/api/paciente")
-          //             .then((x) => x.json())
-          //             .then((hp) => {
-          //                 hp.forEach((element,index) => {
-          //                     var elem = document.createElement('option')
-          //                 elem.value = element.nome;
-          //                 elem.text  = element.nome;
-          //                 comboCidades.appendChild(elem);
-          //                 });
+        async mounted() {
+                  var comboCidades = document.getElementById("inputGroupSelect01");
+               await fetch("https://cmaisoumenos.herokuapp.com/api/paciente")
+                      .then((x) => x.json())
+                      .then((hp) => {
+                          hp.forEach((element,index) => {
+                              var elem = document.createElement('option')
+                          elem.value = element.nome;
+                          elem.text  = element.nome;
+                          comboCidades.appendChild(elem);
+                          });
 
-          //                 console.log(hp)
-          //                 this.usergeral = hp;
-          //             });
+                          console.log(hp)
+                          this.usergeral = hp;
+                      });
 
           id = sessionStorage.getItem("id");
 
