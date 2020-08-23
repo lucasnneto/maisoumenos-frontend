@@ -1265,167 +1265,18 @@
                           </tr>
                         </thead>
                         <tbody>
-                          <tr >
-                            <td>0</td>
-                            <td><div class="font-15"> John Smith </div></td>
-                            <td>John Smith</td>
-                            <td>102</td>
+                          <tr v-for="(u,i) in users">
+                            <td>0{{i+1}}</td>
                             <td>
-                              <button
-                                type="button"
-                                class="btn btn-sm btn-default"
-                                title="Edit"
-                              >
-                                <i class="fa fa-edit"></i>
-                              </button>
-                              <button
-                                type="button"
-                                class="btn btn-sm btn-default js-sweetalert"
-                                title="Delete"
-                                data-type="confirm"
-                              >
-                                <i class="fa fa-trash-o text-danger"></i>
-                              </button>
+                              <div class="font-15">{{u.nome_paciente}}</div>
                             </td>
-                          </tr>
-                          <tr>
-                            <td>02</td>
-                            <td><div class="font-15">Marketing</div></td>
-                            <td>Maryam Amiri</td>
-                            <td>13</td>
+                            <td>{{u.nome_medico}}</td>
+                            <td>{{u.time}}</td>
                             <td>
-                              <button
-                                type="button"
-                                class="btn btn-sm btn-default"
-                                title="Edit"
-                              >
-                                <i class="fa fa-edit"></i>
-                              </button>
-                              <button
-                                type="button"
-                                class="btn btn-sm btn-default js-sweetalert"
-                                title="Delete"
-                                data-type="confirm"
-                              >
-                                <i class="fa fa-trash-o text-danger"></i>
-                              </button>
+                              {{u.sintomas}}
                             </td>
-                          </tr>
-                          <tr>
-                            <td>03</td>
-                            <td><div class="font-15">App Development</div></td>
-                            <td>Frank Camly</td>
-                            <td>21</td>
                             <td>
-                              <button
-                                type="button"
-                                class="btn btn-sm btn-default"
-                                title="Edit"
-                              >
-                                <i class="fa fa-edit"></i>
-                              </button>
-                              <button
-                                type="button"
-                                class="btn btn-sm btn-default js-sweetalert"
-                                title="Delete"
-                                data-type="confirm"
-                              >
-                                <i class="fa fa-trash-o text-danger"></i>
-                              </button>
-                            </td>
-                          </tr>
-                          <tr>
-                            <td>04</td>
-                            <td><div class="font-15">Support</div></td>
-                            <td>Gary Camara</td>
-                            <td>84</td>
-                            <td>
-                              <button
-                                type="button"
-                                class="btn btn-sm btn-default"
-                                title="Edit"
-                              >
-                                <i class="fa fa-edit"></i>
-                              </button>
-                              <button
-                                type="button"
-                                class="btn btn-sm btn-default js-sweetalert"
-                                title="Delete"
-                                data-type="confirm"
-                              >
-                                <i class="fa fa-trash-o text-danger"></i>
-                              </button>
-                            </td>
-                          </tr>
-                          <tr>
-                            <td>05</td>
-                            <td><div class="font-15">Accounts</div></td>
-                            <td>Fidel Tonn</td>
-                            <td>11</td>
-                            <td>
-                              <button
-                                type="button"
-                                class="btn btn-sm btn-default"
-                                title="Edit"
-                              >
-                                <i class="fa fa-edit"></i>
-                              </button>
-                              <button
-                                type="button"
-                                class="btn btn-sm btn-default js-sweetalert"
-                                title="Delete"
-                                data-type="confirm"
-                              >
-                                <i class="fa fa-trash-o text-danger"></i>
-                              </button>
-                            </td>
-                          </tr>
-                          <tr>
-                            <td>06</td>
-                            <td><div class="font-15">PHP Open Source</div></td>
-                            <td>Maryam Amiri</td>
-                            <td>37</td>
-                            <td>
-                              <button
-                                type="button"
-                                class="btn btn-sm btn-default"
-                                title="Edit"
-                              >
-                                <i class="fa fa-edit"></i>
-                              </button>
-                              <button
-                                type="button"
-                                class="btn btn-sm btn-default js-sweetalert"
-                                title="Delete"
-                                data-type="confirm"
-                              >
-                                <i class="fa fa-trash-o text-danger"></i>
-                              </button>
-                            </td>
-                          </tr>
-                          <tr>
-                            <td>07</td>
-                            <td>
-                              <div class="font-15">Design and Printing</div>
-                            </td>
-                            <td>Maryam Amiri</td>
-                            <td>17</td>
-                            <td>
-                              <button
-                                type="button"
-                                class="btn btn-sm btn-default"
-                                title="Edit"
-                              >
-                                <i class="fa fa-edit"></i>
-                              </button>
-                              <button
-                                type="button"
-                                class="btn btn-sm btn-default js-sweetalert"
-                                title="Delete"
-                                data-type="confirm"
-                              >
-                                <i class="fa fa-trash-o text-danger"></i>
-                              </button>
+                              {{u.valor}}
                             </td>
                           </tr>
                         </tbody>
@@ -1447,7 +1298,14 @@
           users: [],
           usersgeral: [],
         },
-        async mounted() {
+        methods: {
+          async obter(param) {
+            let response = await fetch(param);
+            let data = await response.json();
+            return data;
+          },
+        },
+        created() {
           //         var comboCidades = document.getElementById("inputGroupSelect01");
           //      await fetch("https://cmaisoumenos.herokuapp.com/api/paciente")
           //             .then((x) => x.json())
@@ -1464,54 +1322,61 @@
           //             });
 
           id = sessionStorage.getItem("id");
-        //   await fetch(
-        //     "https://cmaisoumenos.herokuapp.com/api/hospital/" +
-        //       id +
-        //       "/consultas"
-        //   )
-        //     .then((x) => x.json())
-        //     .then((hp) => {
-        //       this.users = hp;
-        //     });
-        //   aux = {};
-        //   await fetch("https://cmaisoumenos.herokuapp.com/api/paciente")
-        //     .then((x) => x.json())
-        //     .then((hp) => {
-        //       this.users = this.users.map((el) => {
-        //         hp.forEach((element) => {
-        //           if (el.pid == element._id) {
-        //             aux = {
-        //               ...el,
-        //               nome_paciente: element.nome,
-        //               cpf_paciente: element.cpf,
-        //             };
-        //           }
-        //         });
-        //         return aux;
-        //       });
-        //     });
-        //   this.users = await this.users.map((el) => {
-        //     fetch(
-        //       "https://cmaisoumenos.herokuapp.com/api/funcionario/" + el.fid
-        //     )
-        //       .then((x) => x.json())
-        //       .then((hp) => {
-        //         return {
-        //           ...el,
-        //           mid: hp.mid,
-        //         };
-        //       });
-        //   });
-          //   fetch("https://cmaisoumenos.herokuapp.com/api/medico/" + hp.mid)
-          //           .then((x) => x.json())
-          //           .then((ah) => {
-          //             console.log("aa", ah);
-          //             // return{
-          //             //     ...el,
-          //             //     nome_medico:ah.nome
-          //             // }
-          //           });
-          console.log(this.users);
+          this.obter(
+            "https://cmaisoumenos.herokuapp.com/api/hospital/" +
+              id +
+              "/consultas"
+          ).then((data) => (this.users = data));
+
+          aux = {};
+          this.obter("https://cmaisoumenos.herokuapp.com/api/paciente").then(
+            (data) => {
+              this.users = this.users.map((el) => {
+                data.forEach((element) => {
+                  if (el.pid == element._id) {
+                    aux = {
+                      ...el,
+                      nome_paciente: element.nome,
+                      cpf_paciente: element.cpf,
+                    };
+                  }
+                });
+                return aux;
+              });
+            }
+          );
+          aux2 = {};
+          this.users = this.users.map((el) => {
+            this.obter(
+              "https://cmaisoumenos.herokuapp.com/api/funcionario/" +
+                el.fid +
+                "/medicos"
+            ).then((data) => {
+              console.log("sad", el.fid);
+              aux2 = {
+                ...el,
+                nome_medico: hp.nome,
+              };
+            });
+            return aux2;
+          });
+
+          //   this.users = this.users.map((el) => {
+          //     fetch(
+          //       "https://cmaisoumenos.herokuapp.com/api/funcionario/" +
+          //         el.fid +
+          //         "/medicos"
+          //     )
+          //       .then((x) => x.json())
+          //       .then((hp) => {
+          //         console.log("sad", el.fid);
+          //         aux2 = {
+          //           ...el,
+          //           nome_medico: hp.nome,
+          //         };
+          //       });
+          //     return aux2;
+          //   });
         },
       });
     </script>
@@ -1524,9 +1389,5 @@
 
     <script src="../assets/bundles/mainscripts.bundle.js"></script>
     <script src="../assets/js/pages/ui/dialogs.js"></script>
-    <script src="../assets/js/pages/tables/jquery-datatable.js"></script>
-    <script>
-      $(".dataTable").dataTable({ searching: false });
-    </script>
   </body>
 </html>
