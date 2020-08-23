@@ -1205,6 +1205,7 @@
                         <div class="col-md-12">
                           <div class="form-group">
                             <select
+                              v-model="novo.pid"
                               class="custom-select"
                               id="inputGroupSelect01"
                             >
@@ -1214,22 +1215,29 @@
                         </div>
                         <div class="col-md-6">
                           <div class="form-group">
+                            <select
+                              class="custom-select"
+                              id="inputGroupSelect02"
+                              v-model="novo.fid"
+                            >
+                              <option disabled selected>Médico</option>
+                            </select>
+                          </div>
+                        </div>
+                        <div class="col-md-6">
+                          <div class="form-group">
                             <input
-                              type="text"
+                              v-model="novo.time"
+                              type="date"
                               class="form-control"
-                              placeholder="Médico"
                             />
                           </div>
                         </div>
                         <div class="col-md-6">
                           <div class="form-group">
-                            <input type="date" class="form-control" />
-                          </div>
-                        </div>
-                        <div class="col-md-6">
-                          <div class="form-group">
                             <input
                               type="text"
+                              v-model="novo.sintomas"
                               class="form-control"
                               placeholder="Sintomas"
                             />
@@ -1238,14 +1246,19 @@
                         <div class="col-md-6">
                           <div class="form-group">
                             <input
-                              type="text"
+                              type="number"
+                              v-model.number="novo.valor"
                               class="form-control"
                               placeholder="Valor"
                             />
                           </div>
                         </div>
                         <div class="col-12">
-                          <button type="button" class="btn btn-primary">
+                          <button
+                            type="button"
+                            @click.prevent.stop="inserir"
+                            class="btn btn-primary"
+                          >
                             Inserir
                           </button>
                         </div>
@@ -1299,21 +1312,55 @@
       new Vue({
         el: "#main-content",
         data: {
-          qtd:0,
+          qtd: 0,
           id: "",
           nomem: [],
-          nomep:[],
+          nomep: [],
           users: [],
           pacientes: [],
           usersgeral: [],
+          usersgeral2: [],
+          novo: {
+            pid: "Paciente",
+            fid: "Médico",
+            time: "",
+            sintomas: "",
+            valor: 0,
+          },
         },
         methods: {
+          inserir() {
+            this.novo.fid = axios
+              .get(
+                "https://cmaisoumenos.herokuapp.com/api/hospital/" +
+                  this.id +
+                  "/funcionario/"+this.novo.fid
+              )
+              .then((response) => {
+                this.novo.fid = response.data._id;
+                this.novo.time = new Date(this.novo.time)
+                axios
+                .post("https://cmaisoumenos.herokuapp.com/api/consulta", this.novo)
+                .then(function (response) {
+                  
+                });
+                //return response.data._id;
+              });
+              
+                this.text= {
+            pid: "Paciente",
+            fid: "Médico",
+            time: "",
+            sintomas: "",
+            valor: 0
+          }
+          },
           horario(horario) {
             return new Date(horario).toUTCString();
           },
           medico(id) {
-            if(this.qtd<this.users.length*2){
-              this.qtd= this.qtd+1
+            if (this.qtd < this.users.length * 2) {
+              this.qtd = this.qtd + 1;
               axios
                 .get(
                   "https://cmaisoumenos.herokuapp.com/api/funcionario/" +
@@ -1327,8 +1374,8 @@
             return "";
           },
           pt(id) {
-            if(this.qtd<this.users.length*2){
-              this.qtd= this.qtd+1
+            if (this.qtd < this.users.length * 2) {
+              this.qtd = this.qtd + 1;
 
               axios
                 .get(
@@ -1348,22 +1395,35 @@
           },
         },
         async mounted() {
-                  var comboCidades = document.getElementById("inputGroupSelect01");
-               await fetch("https://cmaisoumenos.herokuapp.com/api/paciente")
-                      .then((x) => x.json())
-                      .then((hp) => {
-                          hp.forEach((element,index) => {
-                              var elem = document.createElement('option')
-                          elem.value = element.nome;
-                          elem.text  = element.nome;
-                          comboCidades.appendChild(elem);
-                          });
-
-                          console.log(hp)
-                          this.usergeral = hp;
-                      });
-
           id = sessionStorage.getItem("id");
+          this.id = sessionStorage.getItem("id");
+          var comboCidades = document.getElementById("inputGroupSelect01");
+          await fetch("https://cmaisoumenos.herokuapp.com/api/paciente")
+            .then((x) => x.json())
+            .then((hp) => {
+              hp.forEach((element, index) => {
+                var elem = document.createElement("option");
+                elem.value = element._id;
+                elem.text = element.nome;
+                comboCidades.appendChild(elem);
+              });
+
+              this.usergeral = hp;
+            });
+          var comboCidades2 = document.getElementById("inputGroupSelect02");
+          await fetch(
+            "https://cmaisoumenos.herokuapp.com/api/hospital/" + id + "/medicos"
+          )
+            .then((x) => x.json())
+            .then((hp) => {
+              hp.forEach((element, index) => {
+                var elem = document.createElement("option");
+                elem.value = element._id;
+                elem.text = element.nome;
+                comboCidades2.appendChild(elem);
+              });
+              this.usergeral2 = hp;
+            });
 
           axios
             .get("https://cmaisoumenos.herokuapp.com/api/consulta")
