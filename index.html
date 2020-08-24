@@ -229,7 +229,7 @@
                                         lng: hp.lng,
                                     },
                                     map: map,
-                                    title: hp.nome,
+                                    title: hp.covid? hp.nome+" - Tratando COVID": hp.nome,
                                     icon: hp.covid ? "./assets/images/pin_red.png" : "./assets/images/pin_blue.png"
                                 });
                             });
