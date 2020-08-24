@@ -826,7 +826,6 @@
                                                 <th>#</th>
                                                 <th>Hospital</th>
                                                 <th>Endereço</th>
-                                                <th>Médico</th>
                                                 <th>Horário</th>
                                                 <th>Valor</th>
                                             </tr>
@@ -842,9 +841,7 @@
                                                 <td>
                                                     {{hospitais(u.pid)+hospital[i].endereco}}
                                                 </td>
-                                               <td>     
-                                                   {{ medicos(u.fid)+med[i] }}
-                                               </td>
+                                               
                                                <td>
                                                    {{u.time}}
                                                 </td>
@@ -884,14 +881,13 @@
       data: {
         id:"",
         consulta: [],
-        med:[],
+  
         hospital:[],
         qtd:0,
         superuser:[]
       },
       created(){
-        //id = sessionStorage.getItem("id");
-        id =  "5f419fde57ba440017d7315c"
+        id = sessionStorage.getItem("id");
         console.log("=====================================",id);
 
         axios
@@ -899,25 +895,7 @@
         .then((response) => (this.consulta = response.data));
       },
       methods:{
-        medicos(id) {
-            if(this.qtd<this.consulta.length*2){
-                this.qtd= this.qtd+1;
-
-                axios
-                .get(
-                    "https://cmaisoumenos.herokuapp.com/api/funcionario/" +
-                    id +
-                    "/medicos"
-                )
-                .then((response) => {
-                    console.log(response);
-
-                    this.med.push(response.data[0]);
-                });
-                
-            }
-            return "";
-          },
+        
           hospitais(id) {
             if(this.qtd<this.consulta.length*2){
                 this.qtd= this.qtd+1;
