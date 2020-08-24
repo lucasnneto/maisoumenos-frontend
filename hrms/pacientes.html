@@ -856,22 +856,7 @@
         usersgeral:[]
       },
       async mounted(){
-            var comboCidades = document.getElementById("inputGroupSelect01");
-         await fetch("https://cmaisoumenos.herokuapp.com/api/paciente")
-                .then((x) => x.json())
-                .then((hp) => {
-                    hp.forEach((element,index) => {
-                        var elem = document.createElement('option')
-                    elem.value = element.nome;
-                    elem.text  = element.nome;
-                    comboCidades.appendChild(elem);
-                    });
-                    
-                    console.log(hp)
-                    this.usergeral = hp;
-                });
-        
-
+            
         id = sessionStorage.getItem('id');
         fetch("https://cmaisoumenos.herokuapp.com/api/hospital/"+id+"/pacientes")
                 .then((x) => x.json())

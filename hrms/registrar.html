@@ -1,88 +1,176 @@
-<!doctype html>
+<!DOCTYPE html>
 <html lang="en">
+  <head>
+    <title>C+- | Registrar</title>
+    <meta charset="utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta
+      name="viewport"
+      content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0"
+    />
+    <meta
+      name="description"
+      content="Registre agora e obtenha dados hospitalares de forma rápida"
+    />
+    <meta name="author" content="Equipe Btree" />
 
-<head>
-<title>C+- | Registrar</title>
-<meta charset="utf-8">
-<meta http-equiv="X-UA-Compatible" content="IE=edge">
-<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0">
-<meta name="description" content="Registre agora e obtenha dados hospitalares de forma rápida">
-<meta name="author" content="Equipe Btree">
+    <link rel="icon" href="favicon.ico" type="image/x-icon" />
+    <script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
+    <!-- VENDOR CSS -->
+    <link
+      rel="stylesheet"
+      href="../assets/vendor/bootstrap/css/bootstrap.min.css"
+    />
+    <link
+      rel="stylesheet"
+      href="../assets/vendor/font-awesome/css/font-awesome.min.css"
+    />
+    <link rel="stylesheet" href="../assets/vendor/animate-css/vivify.min.css" />
+    <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
 
-<link rel="icon" href="favicon.ico" type="image/x-icon">
-<!-- VENDOR CSS -->
-<link rel="stylesheet" href="../assets/vendor/bootstrap/css/bootstrap.min.css">
-<link rel="stylesheet" href="../assets/vendor/font-awesome/css/font-awesome.min.css">
-<link rel="stylesheet" href="../assets/vendor/animate-css/vivify.min.css">
+    <!-- MAIN CSS -->
+    <link rel="stylesheet" href="assets/css/site.min.css" />
+  </head>
 
-<!-- MAIN CSS -->
-<link rel="stylesheet" href="assets/css/site.min.css">
-
-</head>
-
-<body class="theme-cyan font-montserrat" style="background-color: #2677ff;">
-
-<!-- Page Loader -->
-<div class="page-loader-wrapper">
-    <div class="loader">
+  <body class="theme-cyan font-montserrat" style="background-color: #2677ff;">
+    <!-- Page Loader -->
+    <div class="page-loader-wrapper">
+      <div class="loader">
         <div class="bar1"></div>
         <div class="bar2"></div>
         <div class="bar3"></div>
         <div class="bar4"></div>
         <div class="bar5"></div>
+      </div>
     </div>
-</div>
 
-<div class="pattern">
-    <span class="red"></span>
-    <span class="indigo"></span>
-    <span class="blue"></span>
-    <span class="green"></span>
-    <span class="orange"></span>
-</div>
-<div class="auth-main particles_js">
-    <div class="auth_div vivify popIn">
+    <div class="pattern">
+      <span class="red"></span>
+      <span class="indigo"></span>
+      <span class="blue"></span>
+      <span class="green"></span>
+      <span class="orange"></span>
+    </div>
+    <div class="auth-main particles_js">
+      <div class="auth_div vivify popIn">
         <div class="auth_brand">
-            <a class="navbar-brand" href="javascript:void(0);"><img src="../assets/images/iconc+-.png" width="30" height="30" class="d-inline-block align-top mr-2" alt="">C+-</a>                                                
+          <a class="navbar-brand" href="javascript:void(0);"
+            ><img
+              src="../assets/images/iconc+-.png"
+              width="30"
+              height="30"
+              class="d-inline-block align-top mr-2"
+              alt=""
+            />C+-</a
+          >
         </div>
-        <div class="card">
-            <div class="body" style="background-color: #fff;">
-                <p class="lead">Criar nova conta</p>
-                <form class="form-auth-small m-t-20">
-                    <div class="form-group">
-                        <input type="text" class="form-control round" placeholder="Usuário" style="border-color: #e2e4e7;">
-                    </div>
-                    <div class="form-group">                            
-                        <input type="password" class="form-control round" placeholder="Senha" style="border-color: #e2e4e7;">
-                    </div>
-                    <div >
-                        <label>Você é um?</label>
-                        <div>
-                            <label class="fancy-radio">
-                                <input type="radio" name="tipo" value="hospital" required data-parsley-errors-container="#error-radio">
-                                <span><i></i>Hospital</span>
-                            </label>
-                            <label class="fancy-radio">
-                                <input type="radio" name="tipo" value="paciente">
-                                <span><i></i>Paciente</span>
-                            </label>
-                        </div>
-                        <p id="error-radio"></p>
-                    </div>
-                    <button type="submit" class="btn btn-primary btn-round btn-block">Registrar</button>                                
-                </form>
-                <div class="separator-linethrough" style="border-color: #e2e4e7;"><span style="background-color: #fff;">OU</span></div>
-                <button class="btn btn-round btn-signin-social"><i class="fa fa-facebook-official facebook-color"></i> Entre com Facebook</button>
-                <button class="btn btn-round btn-signin-social"><i class="fa fa-twitter twitter-color"></i> Entre com Twitter</button>
+        <div id="app" class="card">
+          <div class="body" style="background-color: #fff;">
+            <p class="lead">Criar nova conta</p>
+            <form class="form-auth-small m-t-20">
+              <div class="form-group">
+                <input
+                  type="text"
+                  class="form-control round"
+                  v-model="novo.usuario"
+                  placeholder="Usuário"
+                  style="border-color: #e2e4e7;"
+                />
+              </div>
+              <div class="form-group">
+                <input
+                  type="password"
+                  v-model="novo.senha"
+                  class="form-control round"
+                  placeholder="Senha"
+                  style="border-color: #e2e4e7;"
+                />
+              </div>
+              <div>
+                <label>Você é um?</label>
+                <div>
+                  <label class="fancy-radio">
+                    <input
+                      type="radio"
+                      name="tipo"
+                      v-model="novo.tipo"
+                      value="hospital"
+                      required
+                      data-parsley-errors-container="#error-radio"
+                    />
+                    <span><i></i>Hospital</span>
+                  </label>
+                  <label class="fancy-radio">
+                    <input
+                      type="radio"
+                      v-model="novo.tipo"
+                      name="tipo"
+                      value="paciente"
+                    />
+                    <span><i></i>Paciente</span>
+                  </label>
+                </div>
+                <p id="error-radio"></p>
+              </div>
+              <button
+                type="submit"
+                @click.prevent.stop="criar"
+                class="btn btn-primary btn-round btn-block"
+              >
+                Registrar
+              </button>
+            </form>
+            <div class="separator-linethrough" style="border-color: #e2e4e7;">
+              <span style="background-color: #fff;">OU</span>
             </div>
+            <button class="btn btn-round btn-signin-social">
+              <i class="fa fa-facebook-official facebook-color"></i> Entre com
+              Facebook
+            </button>
+            <button class="btn btn-round btn-signin-social">
+              <i class="fa fa-twitter twitter-color"></i> Entre com Twitter
+            </button>
+          </div>
         </div>
+      </div>
+      <div id="particles-js"></div>
     </div>
-    <div id="particles-js"></div>
-</div>
-<!-- END WRAPPER -->
+    <!-- END WRAPPER -->
+    <script>
+      new Vue({
+        el: "#app",
+        data: {
+          novo: {
+            usuario: "",
+            senha: "",
+            tipo: "",
+          },
+        },
+        methods: {
+          criar() {
+            if (this.novo.usuario != "" && this.novo.senha != "") {
+              if (this.novo.tipo == "hospital") {
+                this.novo.tipo = true;
+              } else {
+                this.novo.tipo = false;
+              }
+              axios
+                .post("https://cmaisoumenos.herokuapp.com/api/login", this.novo)
+                .then(function (response) {});
+              this.novo.usuario = "";
+              this.novo.senha = "";
+              this.novo.tipo = "";
+              let aux = window.location.href;
+              aux = aux.replace("registrar.html", "entrar.html");
+              window.location.href = aux;
+            }
+          },
+        },
+      });
+    </script>
 
-<script src="assets/bundles/libscripts.bundle.js"></script>    
-<script src="assets/bundles/vendorscripts.bundle.js"></script>
-<script src="assets/bundles/mainscripts.bundle.js"></script>
-</body>
+    <script src="assets/bundles/libscripts.bundle.js"></script>
+    <script src="assets/bundles/vendorscripts.bundle.js"></script>
+    <script src="assets/bundles/mainscripts.bundle.js"></script>
+  </body>
 </html>
